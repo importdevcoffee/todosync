@@ -28,7 +28,13 @@
           "name": "TODOs"
         }
       ]
-    }
+    },
+    "commands": [
+      {
+        "command": "todosync.openTodo",
+        "title": "Open TODO"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",

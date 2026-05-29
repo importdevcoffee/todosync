@@ -27,6 +27,11 @@ class TodoTreeItem extends vscode.TreeItem {
       HACK: "warning",
     };
     this.iconPath = new vscode.ThemeIcon(iconMap[todoitem.type] ?? "bookmark");
+    this.command = {
+      command: "todosync.openTodo",
+      title: "Open TODO",
+      arguments: [todoitem], //passes the TodoItem to the command
+    };
   }
 }
 

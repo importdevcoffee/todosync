@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { parseTodos } from "./parser/todoParser";
 import { TodoTreeProvider } from "./views/todoTreeView";
+import { TodoItem } from "./types";
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("TodoSync is now active");
@@ -8,8 +9,21 @@ export function activate(context: vscode.ExtensionContext) {
   // Create provider (holds todo data)
   const provider = new TodoTreeProvider();
 
-  // Register it with VS Code - "todosync.todoView"
+  // Register window with VS Code
   vscode.window.registerTreeDataProvider("todosync.todoView", provider);
+
+  //Register open command - receives a TodoItem and opens file at correct line
+  const openTodo = vscode.commands.registerCommand(
+    "todosync.openTodo",
+    async (todoItem: TodoItem) => {
+      // Build URI from filepath
+      const uri = vscode.Uri.file(todoItem.file);
+      // Open document and jump to the line
+      await vscode.window.showTextDocument(uri, {
+        selection: new vscode.Range(todoItem.line - 1, 0, todoItem.line - 1, 0),
+      });
+    },
+  );
 
   // Scan the current open file and feed results into provider
   async function scanAndRefresh() {
@@ -31,15 +45,11 @@ export function activate(context: vscode.ExtensionContext) {
   // Scan once on startup
   scanAndRefresh();
 
-  // Re-scan whenever the active editor changes
-  const onEditorChange =
-    vscode.window.onDidChangeActiveTextEditor(scanAndRefresh);
-
   // Re-scan whenever the document is edited
   const onDocChange = vscode.workspace.onDidChangeTextDocument(scanAndRefresh);
 
   // Register everything for cleanup on deactivation
-  context.subscriptions.push(onEditorChange, onDocChange);
+  context.subscriptions.push(openTodo, onDocChange);
 }
 
 export function deactivate() {}
