@@ -11,15 +11,22 @@ export function activate(context: vscode.ExtensionContext) {
   // Register it with VS Code - "todosync.todoView"
   vscode.window.registerTreeDataProvider("todosync.todoView", provider);
 
-  // 3. Scan the current open file and feed results into provider
-  function scanAndRefresh() {
-    const doc = vscode.window.activeTextEditor?.document;
-    if (doc) {
-      provider.refresh(parseTodos(doc));
+  // Scan the current open file and feed results into provider
+  async function scanAndRefresh() {
+    // find all files
+    const files = await vscode.workspace.findFiles(
+      "**/*.{ts, js, py, cs}",
+      "**/node_modules/**",
+    );
+    // open each file and parse it
+    const allTodos = [];
+    for (const file of files) {
+      const doc = await vscode.workspace.openTextDocument(file);
+      const todos = parseTodos(doc);
+      allTodos.push(...todos); // instead of [[todo1, todo2], [todo3]], we get a flat array [todo1, todo2, todo3, ...]
     }
+    provider.refresh(allTodos);
   }
-
-  //TODO: some message
 
   // Scan once on startup
   scanAndRefresh();
