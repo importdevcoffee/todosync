@@ -12,12 +12,23 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "todosync.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "todosync",
+          "title": "TodoSync",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "todosync": [
+        {
+          "id": "todosync.todoView",
+          "name": "TODOs"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
