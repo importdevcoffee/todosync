@@ -1,7 +1,10 @@
 import * as vscode from "vscode";
 import { Priority, TodoItem, Type } from "../types";
 
-export function parseTodos(document: vscode.TextDocument): TodoItem[] {
+export function parseTodos(
+  document: vscode.TextDocument,
+  syncedKeys: string[],
+): TodoItem[] {
   let lineCount = document.lineCount;
   const regex = /\s*\/\/\s*(TODO|FIXME|HACK)(\[(high|medium|low)\])?:\s*(.+)/;
   const todoItems: TodoItem[] = [];
@@ -12,11 +15,13 @@ export function parseTodos(document: vscode.TextDocument): TodoItem[] {
     let type = match[1] as Type;
     let priority = match[3] as Priority | undefined;
     let message = match[4];
+    const key = `${document.fileName}:${message}`;
+
     todoItems.push({
       file: document.fileName,
       line: i + 1,
       message: message,
-      synced: false,
+      synced: syncedKeys.includes(key),
       type: type,
       priority: priority,
     });

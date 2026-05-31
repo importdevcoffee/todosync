@@ -53,12 +53,12 @@ async function getRepoInfo(): Promise<RepoInfo | undefined> {
 }
 
 // Create GitHub issue
-export async function createIssue(todo: TodoItem) {
+export async function createIssue(todo: TodoItem): Promise<boolean> {
   const repoInfo = await getRepoInfo();
-  if (!repoInfo) return;
+  if (!repoInfo) return false;
 
   const session = await getSession();
-  if (!session) return;
+  if (!session) return false;
   const token = session.accessToken;
 
   const url = `https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}/issues`;
@@ -88,9 +88,11 @@ export async function createIssue(todo: TodoItem) {
     vscode.window.showErrorMessage(
       `TodoSync: Failed to create issue — ${response.statusText}`,
     );
+    return false;
   } else {
     vscode.window.showInformationMessage(
       `TodoSync: Issue created successfully`,
     );
+    return true;
   }
 }

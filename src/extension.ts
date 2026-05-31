@@ -31,13 +31,27 @@ export function activate(context: vscode.ExtensionContext) {
     async (item: TodoTreeItem) => {
       //argument received automatically via context menu for createIssue
       // vscode passes the clicked tree item directly to context menu commands.
-      await createIssue(item.todoitem);
+      const success = await createIssue(item.todoitem);
+
+      if (success) {
+        //Build a key for marking if a todoitem is "synced"
+        const key = `${item.todoitem.file}:${item.todoitem.message}`;
+        // get existing synced keys from globalState
+        const synced =
+          context.globalState.get<string[]>("todosync.synced") ?? [];
+        // adding new key and save
+        await context.globalState.update("todosync.synced", [...synced, key]);
+
+        //refresh TodoItemTree
+        await scanAndRefresh();
+      }
     },
   );
 
   // Scan the current open file and feed results into provider
   async function scanAndRefresh() {
-    // find all files
+    const syncedKeys =
+      context.globalState.get<string[]>("todosync.synced") ?? [];
     const files = await vscode.workspace.findFiles(
       "**/*.{ts,js,py,cs}",
       "**/node_modules/**",
@@ -46,8 +60,7 @@ export function activate(context: vscode.ExtensionContext) {
     const allTodos = [];
     for (const file of files) {
       const doc = await vscode.workspace.openTextDocument(file);
-      const todos = parseTodos(doc);
-      allTodos.push(...todos); // instead of [[todo1, todo2], [todo3]], we get a flat array [todo1, todo2, todo3, ...]
+      allTodos.push(...parseTodos(doc, syncedKeys));
     }
     provider.refresh(allTodos);
   }

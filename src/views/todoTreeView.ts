@@ -27,6 +27,13 @@ export class TodoTreeItem extends vscode.TreeItem {
       HACK: "warning",
     };
     this.iconPath = new vscode.ThemeIcon(iconMap[todoitem.type] ?? "bookmark");
+    if (todoitem.synced) {
+      this.iconPath = new vscode.ThemeIcon(
+        "check",
+        new vscode.ThemeColor("charts.green"),
+      );
+      this.description = `${todoitem.priority ?? ""} ✓ synced`;
+    }
     this.command = {
       command: "todosync.openTodo",
       title: "Open TODO",
