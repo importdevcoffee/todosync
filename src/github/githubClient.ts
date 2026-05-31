@@ -5,13 +5,18 @@ import path from "path";
 interface RepoInfo {
   owner: string;
   repo: string;
+  root: string; // workspace root
 }
 
 // Get the GitHub auth session (or prompt login)
-async function getSession(): Promise<vscode.AuthenticationSession> {
+async function getSession(): Promise<vscode.AuthenticationSession | undefined> {
   const session = await vscode.authentication.getSession("github", ["repo"], {
     createIfNone: true,
   });
+  if (!session) {
+    vscode.window.showErrorMessage("TodoSync: Please sign in to GitHub first");
+    return;
+  }
   return session;
 }
 
@@ -38,7 +43,13 @@ async function getRepoInfo(): Promise<RepoInfo | undefined> {
   const owner = match[2];
   const repo = match[3].replace(".git", ""); // safety net in case .git slips through
 
-  return { owner, repo } as RepoInfo;
+  const root = git?.repositories[0]?.rootUri?.fsPath;
+  if (!root) {
+    vscode.window.showErrorMessage("TodoSync: No workspace folder open");
+    return undefined;
+  }
+
+  return { owner, repo, root };
 }
 
 // Create GitHub issue
@@ -52,12 +63,7 @@ export async function createIssue(todo: TodoItem) {
 
   const url = `https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}/issues`;
 
-  const workspaceRoot = await getWorkspaceRoot();
-  if (!workspaceRoot) {
-    vscode.window.showErrorMessage("TodoSync: No workspace folder open");
-    return;
-  }
-  const relativePath = path.relative(workspaceRoot, todo.file);
+  const relativePath = path.relative(repoInfo.root, todo.file);
 
   const title = todo.message;
   const body = `## ${todo.message}
@@ -87,11 +93,4 @@ export async function createIssue(todo: TodoItem) {
       `TodoSync: Issue created successfully`,
     );
   }
-}
-
-async function getWorkspaceRoot(): Promise<string | undefined> {
-  const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports;
-  if (!gitExtension) return undefined;
-  const git = gitExtension.getAPI(1);
-  return git?.repositories[0]?.rootUri?.fsPath;
 }

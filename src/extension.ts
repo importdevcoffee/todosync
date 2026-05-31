@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
   async function scanAndRefresh() {
     // find all files
     const files = await vscode.workspace.findFiles(
-      "**/*.{ts, js, py, cs}",
+      "**/*.{ts,js,py,cs}",
       "**/node_modules/**",
     );
     // open each file and parse it
