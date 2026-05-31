@@ -14,7 +14,7 @@ class FileTreeItem extends vscode.TreeItem {
   }
 }
 
-class TodoTreeItem extends vscode.TreeItem {
+export class TodoTreeItem extends vscode.TreeItem {
   constructor(public readonly todoitem: TodoItem) {
     super(
       `[${todoitem.type}] ${todoitem.message}`,
@@ -38,7 +38,7 @@ class TodoTreeItem extends vscode.TreeItem {
 type TreeNode = FileTreeItem | TodoTreeItem;
 
 export class TodoTreeProvider implements vscode.TreeDataProvider<TreeNode> {
-  private todos: TodoItem[] = []; // starts empty
+  private todos: TodoItem[] = [];
 
   //Create EvenetEmitter
   private _onDidChangeTreeData = new vscode.EventEmitter<void>();
@@ -56,9 +56,9 @@ export class TodoTreeProvider implements vscode.TreeDataProvider<TreeNode> {
       const grouped = new Map<string, TodoItem[]>();
       for (const todo of this.todos) {
         if (!grouped.has(todo.file)) {
-          grouped.set(todo.file, []); //Explain please
+          grouped.set(todo.file, []);
         }
-        grouped.get(todo.file)!.push(todo); // string doesnt have .push (this doesnt work.), explain what to do
+        grouped.get(todo.file)!.push(todo);
       }
       // Map needs to be converted to an array first, we get something like:
       // [["extension.ts", [todo1, todo2]], ["example.ts", [todo3]]]

@@ -1,7 +1,8 @@
 import * as vscode from "vscode";
 import { parseTodos } from "./parser/todoParser";
-import { TodoTreeProvider } from "./views/todoTreeView";
+import { TodoTreeItem, TodoTreeProvider } from "./views/todoTreeView";
 import { TodoItem } from "./types";
+import { createIssue } from "./github/githubClient";
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("TodoSync is now active");
@@ -22,6 +23,15 @@ export function activate(context: vscode.ExtensionContext) {
       await vscode.window.showTextDocument(uri, {
         selection: new vscode.Range(todoItem.line - 1, 0, todoItem.line - 1, 0),
       });
+    },
+  );
+
+  const createIssueCommand = vscode.commands.registerCommand(
+    "todosync.createIssue",
+    async (item: TodoTreeItem) => {
+      //argument received automatically via context menu for createIssue
+      // vscode passes the clicked tree item directly to context menu commands.
+      await createIssue(item.todoitem);
     },
   );
 
@@ -49,7 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
   const onDocChange = vscode.workspace.onDidChangeTextDocument(scanAndRefresh);
 
   // Register everything for cleanup on deactivation
-  context.subscriptions.push(openTodo, onDocChange);
+  context.subscriptions.push(openTodo, createIssueCommand, onDocChange);
 }
 
 export function deactivate() {}

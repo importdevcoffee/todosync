@@ -1,0 +1,97 @@
+import * as vscode from "vscode";
+import { TodoItem } from "../types";
+import path from "path";
+
+interface RepoInfo {
+  owner: string;
+  repo: string;
+}
+
+// Get the GitHub auth session (or prompt login)
+async function getSession(): Promise<vscode.AuthenticationSession> {
+  const session = await vscode.authentication.getSession("github", ["repo"], {
+    createIfNone: true,
+  });
+  return session;
+}
+
+// Get owner and repo from the workspace git remote
+async function getRepoInfo(): Promise<RepoInfo | undefined> {
+  const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports;
+  if (!gitExtension) {
+    vscode.window.showErrorMessage("TodoSync: Git extension not found");
+    return undefined;
+  }
+  const git = gitExtension.getAPI(1);
+  const remoteUrl = git.repositories[0]?.state.remotes[0]?.fetchUrl;
+
+  if (!remoteUrl) {
+    vscode.window.showErrorMessage("TodoSync: No remote URL found");
+    return undefined;
+  }
+
+  const match = remoteUrl.match(
+    /(https:\/\/|git@)?github\.com[\/:]([^\/]+)\/([^\/]+)(\.git)?$/,
+  );
+  if (!match) return undefined; // not a GitHub remote
+
+  const owner = match[2];
+  const repo = match[3].replace(".git", ""); // safety net in case .git slips through
+
+  return { owner, repo } as RepoInfo;
+}
+
+// Create GitHub issue
+export async function createIssue(todo: TodoItem) {
+  const repoInfo = await getRepoInfo();
+  if (!repoInfo) return;
+
+  const session = await getSession();
+  if (!session) return;
+  const token = session.accessToken;
+
+  const url = `https://api.github.com/repos/${repoInfo.owner}/${repoInfo.repo}/issues`;
+
+  const workspaceRoot = await getWorkspaceRoot();
+  if (!workspaceRoot) {
+    vscode.window.showErrorMessage("TodoSync: No workspace folder open");
+    return;
+  }
+  const relativePath = path.relative(workspaceRoot, todo.file);
+
+  const title = todo.message;
+  const body = `## ${todo.message}
+
+**Type:** ${todo.type}
+**Priority:** ${todo.priority ?? "none"}
+**File:** ${relativePath}
+**Line:** ${todo.line}
+
+---
+*Created by TodoSync*`;
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title, body }),
+  });
+
+  if (!response.ok) {
+    vscode.window.showErrorMessage(
+      `TodoSync: Failed to create issue — ${response.statusText}`,
+    );
+  } else {
+    vscode.window.showInformationMessage(
+      `TodoSync: Issue created successfully`,
+    );
+  }
+}
+
+async function getWorkspaceRoot(): Promise<string | undefined> {
+  const gitExtension = vscode.extensions.getExtension("vscode.git")?.exports;
+  if (!gitExtension) return undefined;
+  const git = gitExtension.getAPI(1);
+  return git?.repositories[0]?.rootUri?.fsPath;
+}

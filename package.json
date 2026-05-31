@@ -33,8 +33,20 @@
       {
         "command": "todosync.openTodo",
         "title": "Open TODO"
+      },
+      {
+        "command": "todosync.createIssue",
+        "title": "Create GitHub Issue"
       }
-    ]
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "todosync.createIssue",
+          "when": "view == todosync.todoView"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
