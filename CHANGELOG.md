@@ -1,17 +1,19 @@
-# Change Log
+# Changelog
 
-All notable changes to TodoSyn will be documented here.
+All notable changes to TodoSync will be documented here.
 Format based on [Keep a Changelog](http://keepachangelog.com/)
 
 ## [Unreleased]
 
-- Click a TODO in the sidebar to jump directly to the file and line
-- Workspace-wide TODO scanning across all supported file types (ts, js, py, cs)
-- Sidebar tree view with TODOs grouped by file
-- Icons per annotation type (TODO → bookmark, FIXME → bug, HACK → warning)
-- Priority displayed as description on each TODO item
+- Initial extension scaffold and project structure
 - TODO parser with regex-based extraction of type, priority and message
 - Support for TODO, FIXME, HACK annotations
 - Optional priority metadata via bracket syntax e.g. TODO[high]
-- Initial extension scaffold
-- Project structure and README
+- Sidebar tree view with TODOs grouped by file
+- Icons per annotation type (TODO → bookmark, FIXME → bug, HACK → warning)
+- Priority displayed as description on each TODO item
+- Click a TODO in the sidebar to jump directly to the file and line
+- Workspace-wide TODO scanning across all supported file types (ts, js, py, cs)
+- Create GitHub Issues from TODO items via right-click context menu
+- Issue body includes type, priority, relative file path and line number
+- GitHub authentication via VS Code built-in session
