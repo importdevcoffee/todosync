@@ -7,6 +7,13 @@ import { createIssue } from "./github/githubClient";
 export function activate(context: vscode.ExtensionContext) {
   console.log("TodoSync is now active");
 
+  //Create status bar item
+  const statusBar = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    100, //priority - higher = further left
+  );
+  statusBar.show();
+
   // Create provider (holds todo data)
   const provider = new TodoTreeProvider();
 
@@ -73,6 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
       const doc = await vscode.workspace.openTextDocument(file);
       allTodos.push(...parseTodos(doc, syncedKeys));
     }
+    updateStatusBar(allTodos, statusBar);
     provider.refresh(allTodos);
   }
 
@@ -83,7 +91,20 @@ export function activate(context: vscode.ExtensionContext) {
   const onDocChange = vscode.workspace.onDidChangeTextDocument(scanAndRefresh);
 
   // Register everything for cleanup on deactivation
-  context.subscriptions.push(openTodo, createIssueCommand, onDocChange);
+  context.subscriptions.push(
+    statusBar,
+    openTodo,
+    createIssueCommand,
+    onDocChange,
+  );
 }
 
 export function deactivate() {}
+
+function updateStatusBar(todos: TodoItem[], statusBar: vscode.StatusBarItem) {
+  const total = todos.length;
+  const synced = todos.filter((t) => t.synced).length;
+  statusBar.text = `$(bookmark) ${total} TODOs (${synced} synced)`; // $(bookmark) syntax uses VSCode built-in icons
+  statusBar.tooltip = "Click to focus TodoSync panel";
+  statusBar.command = "workbench.view.extension.todosync";
+}
