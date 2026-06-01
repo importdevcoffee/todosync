@@ -29,6 +29,17 @@ export function activate(context: vscode.ExtensionContext) {
   const createIssueCommand = vscode.commands.registerCommand(
     "todosync.createIssue",
     async (item: TodoTreeItem) => {
+      //check if already synced
+      if (item.todoitem.synced) {
+        // ask user for confirmation, as the todoitem is already synced
+        const confirm = await vscode.window.showWarningMessage(
+          "This TODO has already been pushed to GitHub. Create another issue?",
+          "Yes",
+          "No",
+        );
+        if (confirm !== "Yes") return;
+      }
+
       //argument received automatically via context menu for createIssue
       // vscode passes the clicked tree item directly to context menu commands.
       const success = await createIssue(item.todoitem);
