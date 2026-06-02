@@ -37,9 +37,21 @@
       {
         "command": "todosync.createIssue",
         "title": "Create GitHub Issue"
+      },
+      {
+        "command": "todosync.refreshTodos",
+        "title": "Refresh TODOs",
+        "icon": "$(refresh)"
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "todosync.refreshTodos",
+          "when": "view == todosync.todoView",
+          "group": "navigation"
+        }
+      ],
       "view/item/context": [
         {
           "command": "todosync.createIssue",

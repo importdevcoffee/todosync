@@ -90,12 +90,20 @@ export function activate(context: vscode.ExtensionContext) {
   // Re-scan whenever the document is edited
   const onDocChange = vscode.workspace.onDidChangeTextDocument(scanAndRefresh);
 
+  const todoRefresh = vscode.commands.registerCommand(
+    "todosync.refreshTodos",
+    async () => {
+      await scanAndRefresh();
+    },
+  );
+
   // Register everything for cleanup on deactivation
   context.subscriptions.push(
     statusBar,
     openTodo,
     createIssueCommand,
     onDocChange,
+    todoRefresh,
   );
 }
 
