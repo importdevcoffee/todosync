@@ -4,7 +4,16 @@
   "description": "Sync your TODO, FIXME and HACK annotations to GitHub Issues directly from VS Code",
   "version": "0.1.0",
   "publisher": "",
+  "icon": "resources/icon.png",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/importdevcoffee/todosync"
+  },
+  "bugs": {
+    "url": "https://github.com/importdevcoffee/todosync/issues"
+  },
+  "homepage": "https://github.com/importdevcoffee/todosync#readme",
   "keywords": [
     "todo",
     "github",
