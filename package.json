@@ -1,6 +1,6 @@
 {
   "name": "todosync",
-  "displayName": "TodoSync",
+  "displayName": "TodoSync - Github Issues",
   "description": "Sync your TODO, FIXME and HACK annotations to GitHub Issues directly from VS Code",
   "version": "0.1.0",
   "publisher": "importdevcoffee",
@@ -45,7 +45,8 @@
       "todosync": [
         {
           "id": "todosync.todoView",
-          "name": "TODOs"
+          "name": "TODOs",
+          "icon": "resources/icon.svg"
         }
       ]
     },
