@@ -3,7 +3,7 @@
   "displayName": "TodoSync",
   "description": "Sync your TODO, FIXME and HACK annotations to GitHub Issues directly from VS Code",
   "version": "0.1.0",
-  "publisher": "",
+  "publisher": "importdevcoffee",
   "icon": "resources/icon-marketplace.png",
   "license": "MIT",
   "repository": {
