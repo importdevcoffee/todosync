@@ -11,25 +11,23 @@ Sync your TODO annotations to GitHub Issues directly from VS Code.
 
 TodoSync scans your workspace for `TODO`, `FIXME` and `HACK` annotations and lets you push them directly to GitHub Issues without leaving VS Code. Track what's synced, jump to any annotation in one click, and keep your code and issue tracker in sync.
 
-Built as a side project — feedback and contributions welcome.
-
 ---
 
 ## Demo
 
 ### Sidebar & Tree View
 
-![Sidebar and Tree View](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/sidebar_and_treeview.gif)
+![Sidebar and Tree View](resources/demo/sidebar_and_treeview.gif)
 
 ### Creating GitHub Issues
 
-![Creating GitHub Issues](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/create_issues.gif)
+![Creating GitHub Issues](resources/demo/create_issues.gif)
 
-![GitHub Issue Example](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/github_issues_by_todosync.png)
+![GitHub Issue Example](resources/demo/github_issues_by_todosync.png)
 
 ### Status Bar
 
-![Status Bar](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/status_bar.gif)
+![Status Bar](resources/demo/status_bar.gif)
 
 ---
 
