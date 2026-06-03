@@ -10,7 +10,6 @@ export enum Priority {
   Low = "low",
 }
 
-// TODO: Maybe added in the future, currently not considered in code (not exported).
 enum Label {
   Bug = "bug",
   Doc = "doc",
