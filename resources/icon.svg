@@ -1,3 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <path fill="#fff" d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z"/>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <!-- No background circle -->
+  <!-- Sync arc -->
+  <path d="M 64 12 A 52 52 0 1 0 100.8 27.2" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" marker-end="url(#arr)"/>
+  <!-- Bold T -->
+  <line x1="38" y1="52" x2="90" y2="52" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <line x1="64" y1="52" x2="64" y2="90" stroke="white" stroke-width="9" stroke-linecap="round"/>
 </svg>

@@ -1,13 +1,24 @@
 {
   "name": "todosync",
-  "displayName": "todosync",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "TodoSync",
+  "description": "Sync your TODO, FIXME and HACK annotations to GitHub Issues directly from VS Code",
+  "version": "0.1.0",
+  "publisher": "",
+  "license": "MIT",
+  "keywords": [
+    "todo",
+    "github",
+    "issues",
+    "tasks",
+    "annotations",
+    "productivity"
+  ],
   "engines": {
     "vscode": "^1.120.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "SCM Providers"
   ],
   "activationEvents": [],
   "main": "./dist/extension.js",
