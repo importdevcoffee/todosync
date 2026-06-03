@@ -4,7 +4,7 @@
   "description": "Sync your TODO, FIXME and HACK annotations to GitHub Issues directly from VS Code",
   "version": "0.1.0",
   "publisher": "",
-  "icon": "resources/icon.png",
+  "icon": "resources/icon-marketplace.png",
   "license": "MIT",
   "repository": {
     "type": "git",
