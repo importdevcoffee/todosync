@@ -27,3 +27,10 @@ Format based on [Keep a Changelog](http://keepachangelog.com/)
 - Status bar showing total and synced TODO count
 - Manual refresh button in sidebar title bar
 - Extension icon
+
+## [0.1.1] - 2026-06-04
+
+### Fixed
+
+- Marketplace image rendering with absolute URLs
+- README overview section cleaned up
