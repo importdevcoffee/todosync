@@ -19,17 +19,17 @@ Built as a side project — feedback and contributions welcome.
 
 ### Sidebar & Tree View
 
-![Sidebar and Tree View](resources/demo/sidebar_and_treeview.gif)
+![Sidebar and Tree View](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/sidebar_and_treeview.gif)
 
 ### Creating GitHub Issues
 
-![Creating GitHub Issues](resources/demo/create_issues.gif)
+![Creating GitHub Issues](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/create_issues.gif)
 
-![GitHub Issue Example](resources/demo/github_issues_by_todosync.png)
+![GitHub Issue Example](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/github_issues_by_todosync.png)
 
 ### Status Bar
 
-![Status Bar](resources/demo/status_bar.gif)
+![Status Bar](https://raw.githubusercontent.com/importdevcoffee/todosync/main/resources/demo/status_bar.gif)
 
 ---
 
@@ -87,9 +87,9 @@ TodoSync uses VS Code's built-in GitHub authentication. No Personal Access Token
 
 ## Roadmap
 
-- [ ] Label management
-- [ ] Editor decorations for TODO lines
-- [ ] Multi-root workspace support
+- [ ] Bulk push multiple TODOs as issues at once
+- [ ] Configurable file types to scan
+- [ ] Open linked GitHub Issue directly from the sidebar
 
 ---
 
