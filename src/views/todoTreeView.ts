@@ -16,10 +16,7 @@ class FileTreeItem extends vscode.TreeItem {
 
 export class TodoTreeItem extends vscode.TreeItem {
   constructor(public readonly todoitem: TodoItem) {
-    super(
-      `[${todoitem.type}] ${todoitem.message}`,
-      vscode.TreeItemCollapsibleState.None,
-    );
+    super(`[${todoitem.type}] ${todoitem.message}`, vscode.TreeItemCollapsibleState.None);
     this.description = todoitem.priority ?? "";
     const iconMap: Record<string, string> = {
       TODO: "bookmark",
@@ -28,10 +25,7 @@ export class TodoTreeItem extends vscode.TreeItem {
     };
     this.iconPath = new vscode.ThemeIcon(iconMap[todoitem.type] ?? "bookmark");
     if (todoitem.synced) {
-      this.iconPath = new vscode.ThemeIcon(
-        "check",
-        new vscode.ThemeColor("charts.green"),
-      );
+      this.iconPath = new vscode.ThemeIcon("check", new vscode.ThemeColor("charts.green"));
       this.description = `${todoitem.priority ?? ""} ✓ synced`;
     }
     this.command = {
@@ -69,9 +63,7 @@ export class TodoTreeProvider implements vscode.TreeDataProvider<TreeNode> {
       }
       // Map needs to be converted to an array first, we get something like:
       // [["extension.ts", [todo1, todo2]], ["example.ts", [todo3]]]
-      return Array.from(grouped.entries()).map(
-        ([file, todos]) => new FileTreeItem(file, todos),
-      );
+      return Array.from(grouped.entries()).map(([file, todos]) => new FileTreeItem(file, todos));
     }
     if (element instanceof FileTreeItem) {
       return element.todoItems.map((todo) => new TodoTreeItem(todo));
