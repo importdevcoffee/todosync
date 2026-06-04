@@ -34,3 +34,10 @@ Format based on [Keep a Changelog](http://keepachangelog.com/)
 
 - Marketplace image rendering with absolute URLs
 - README overview section cleaned up
+
+## [0.1.2] - 2026-06-04
+
+### Added
+
+- Configurable file types via VS Code settings
+- Configuration section in README with screenshots
