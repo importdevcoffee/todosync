@@ -12,6 +12,7 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+.markdownlint.json
 pnpm-lock.yaml
 pnpm-workspace.yaml
 resources/icon.png
