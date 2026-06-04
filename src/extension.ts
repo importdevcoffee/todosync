@@ -55,8 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
         //Build a key for marking if a todoitem is "synced"
         const key = `${item.todoitem.file}:${item.todoitem.message}`;
         // get existing synced keys from globalState
-        const synced =
-          context.globalState.get<string[]>("todosync.synced") ?? [];
+        const synced = context.globalState.get<string[]>("todosync.synced") ?? [];
         // adding new key and save
         await context.globalState.update("todosync.synced", [...synced, key]);
 
@@ -68,12 +67,14 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Scan the current open file and feed results into provider
   async function scanAndRefresh() {
-    const syncedKeys =
-      context.globalState.get<string[]>("todosync.synced") ?? [];
-    const files = await vscode.workspace.findFiles(
-      "**/*.{ts,js,py,cs}",
-      "**/node_modules/**",
-    );
+    const syncedKeys = context.globalState.get<string[]>("todosync.synced") ?? [];
+
+    // read config for contribution files, changeable in settings.json
+    const config = vscode.workspace.getConfiguration("todosync");
+    const fileTypes = config.get<string[]>("fileTypes") ?? ["ts", "js", "py", "cs"];
+    const glob = `**/*.{${fileTypes.join(",")}}`;
+
+    const files = await vscode.workspace.findFiles(glob, "**/node_modules/**");
     // open each file and parse it
     const allTodos = [];
     for (const file of files) {
@@ -90,21 +91,12 @@ export function activate(context: vscode.ExtensionContext) {
   // Re-scan whenever the document is edited
   const onDocChange = vscode.workspace.onDidChangeTextDocument(scanAndRefresh);
 
-  const todoRefresh = vscode.commands.registerCommand(
-    "todosync.refreshTodos",
-    async () => {
-      await scanAndRefresh();
-    },
-  );
+  const todoRefresh = vscode.commands.registerCommand("todosync.refreshTodos", async () => {
+    await scanAndRefresh();
+  });
 
   // Register everything for cleanup on deactivation
-  context.subscriptions.push(
-    statusBar,
-    openTodo,
-    createIssueCommand,
-    onDocChange,
-    todoRefresh,
-  );
+  context.subscriptions.push(statusBar, openTodo, createIssueCommand, onDocChange, todoRefresh);
 }
 
 export function deactivate() {}

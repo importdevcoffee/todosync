@@ -32,6 +32,21 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "TodoSync",
+      "properties": {
+        "todosync.fileTypes": {
+          "type": "array",
+          "default": [
+            "ts",
+            "js",
+            "py",
+            "cs"
+          ],
+          "description": "File extensions to scan for TODO annotations (without the dot)"
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
