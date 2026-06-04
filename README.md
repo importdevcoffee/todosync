@@ -41,6 +41,7 @@ TodoSync scans your workspace for `TODO`, `FIXME` and `HACK` annotations and let
 - Visual sync indicator showing which TODOs have already been pushed
 - Status bar showing total and synced TODO count
 - Manual refresh button in the sidebar
+- Configurable file types via VS Code settings
 
 ---
 
@@ -55,7 +56,37 @@ TodoSync scans your workspace for `TODO`, `FIXME` and `HACK` annotations and let
 // HACK: temporary workaround
 ```
 
-Parsed automatically across `.ts`, `.js`, `.py` and `.cs` files in your workspace.
+Parsed automatically across your configured file types.
+
+---
+
+## Configuration
+
+Open VS Code settings (`Ctrl+,`) and search for `todosync`.
+
+![TodoSync in VS Code settings](resources/demo/settings_search.png)
+
+### File Types
+
+By default TodoSync scans `.ts`, `.js`, `.py` and `.cs` files. Add or remove extensions to match your project.
+
+For example:
+
+```json
+"todosync.fileTypes": ["ts", "js", "py", "cs", "go", "java"]
+```
+
+![Default file type settings](resources/demo/settings_default.png)
+
+With a Python file open, TODOs are picked up automatically:
+
+![Python TODO visible in sidebar](resources/demo/settings_python_todo.png)
+
+Removing `py` and saving `settings.json`, then clicking refresh clears Python TODOs from the sidebar:
+
+![py removed from settings](resources/demo/settings_removed_py.png)
+
+![Sidebar after refresh](resources/demo/settings_after_refresh.png)
 
 ---
 
