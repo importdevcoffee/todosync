@@ -117,7 +117,7 @@ TodoSync uses VS Code's built-in GitHub authentication. No Personal Access Token
 ## Roadmap
 
 - [ ] Bulk push multiple TODOs as issues at once
-- [ ] Configurable file types to scan
+- [x] Configurable file types to scan
 - [ ] Open linked GitHub Issue directly from the sidebar
 
 ---
