@@ -105,6 +105,7 @@ Removing `py` and saving `settings.json`, then clicking refresh clears Python TO
 4. Click a TODO to jump to it in the editor
 5. Right-click a TODO and select **Create GitHub Issue**
 6. The TODO is marked as synced. No duplicate issues will be created.
+7. Optionally, right-click a synced TODO and select **Open GitHub Issue** to view it in the browser
 
 ---
 
@@ -118,7 +119,7 @@ TodoSync uses VS Code's built-in GitHub authentication. No Personal Access Token
 
 - [ ] Bulk push multiple TODOs as issues at once
 - [x] Configurable file types to scan
-- [ ] Open linked GitHub Issue directly from the sidebar
+- [x] Open linked GitHub Issue directly from the sidebar
 
 ---
 

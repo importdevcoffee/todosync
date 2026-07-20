@@ -41,3 +41,11 @@ Format based on [Keep a Changelog](http://keepachangelog.com/)
 
 - Configurable file types via VS Code settings
 - Configuration section in README with screenshots
+
+## [0.2.0] - 2026-06-04
+
+### Added
+
+- Open linked GitHub Issue directly from sidebar via right-click context menu
+- GitHub Issue URL stored locally after creation for quick access
+- Context-aware menu — unsynced TODOs show "Create", synced TODOs show "Open"
