@@ -28,6 +28,10 @@ export class TodoTreeItem extends vscode.TreeItem {
       this.iconPath = new vscode.ThemeIcon("check", new vscode.ThemeColor("charts.green"));
       this.description = `${todoitem.priority ?? ""} ✓ synced`;
     }
+
+    // set contextValue so package.json menus can conditionally show commands
+    this.contextValue = todoitem.synced ? "synced" : "unsynced";
+
     this.command = {
       command: "todosync.openTodo",
       title: "Open TODO",

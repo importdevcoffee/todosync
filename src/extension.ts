@@ -33,6 +33,21 @@ export function activate(context: vscode.ExtensionContext) {
     },
   );
 
+  const openIssueCommand = vscode.commands.registerCommand(
+    "todosync.openIssue",
+    async (item: TodoTreeItem) => {
+      const key = `${item.todoitem.file}:${item.todoitem.message}`;
+      const urls = context.globalState.get<Record<string, string>>("todosync.issueUrls") ?? {};
+      const url = urls[key];
+
+      if (url) {
+        vscode.env.openExternal(vscode.Uri.parse(url));
+      } else {
+        vscode.window.showWarningMessage("TodoSync: No linked issue found for this TODO");
+      }
+    },
+  );
+
   const createIssueCommand = vscode.commands.registerCommand(
     "todosync.createIssue",
     async (item: TodoTreeItem) => {
@@ -47,19 +62,25 @@ export function activate(context: vscode.ExtensionContext) {
         if (confirm !== "Yes") return;
       }
 
-      //argument received automatically via context menu for createIssue
+      // argument received automatically via context menu for createIssue
       // vscode passes the clicked tree item directly to context menu commands.
-      const success = await createIssue(item.todoitem);
+      const issueUrl = await createIssue(item.todoitem);
 
-      if (success) {
-        //Build a key for marking if a todoitem is "synced"
+      if (issueUrl) {
+        // build key for uniquely identifying this todoitem
         const key = `${item.todoitem.file}:${item.todoitem.message}`;
-        // get existing synced keys from globalState
+
+        // get existing synced keys from globalState and add new one
         const synced = context.globalState.get<string[]>("todosync.synced") ?? [];
-        // adding new key and save
         await context.globalState.update("todosync.synced", [...synced, key]);
 
-        //refresh TodoItemTree
+        // storing GitHub Issue URL mapped to this key
+        // used later by openIssueCommand to open the linked issue
+        const urls = context.globalState.get<Record<string, string>>("todosync.issueUrls") ?? {};
+        urls[key] = issueUrl;
+        await context.globalState.update("todosync.issueUrls", urls);
+
+        // refresh tree to show synced indicator
         await scanAndRefresh();
       }
     },
@@ -96,7 +117,14 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   // Register everything for cleanup on deactivation
-  context.subscriptions.push(statusBar, openTodo, createIssueCommand, onDocChange, todoRefresh);
+  context.subscriptions.push(
+    statusBar,
+    openTodo,
+    openIssueCommand,
+    createIssueCommand,
+    onDocChange,
+    todoRefresh,
+  );
 }
 
 export function deactivate() {}

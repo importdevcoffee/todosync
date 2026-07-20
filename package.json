@@ -71,6 +71,10 @@
         "title": "Open TODO"
       },
       {
+        "command": "todosync.openIssue",
+        "title": "Open GitHub Issue"
+      },
+      {
         "command": "todosync.createIssue",
         "title": "Create GitHub Issue"
       },
@@ -89,6 +93,10 @@
         }
       ],
       "view/item/context": [
+        {
+          "command": "todosync.openIssue",
+          "when": "view == todosync.todoView && viewItem == synced"
+        },
         {
           "command": "todosync.createIssue",
           "when": "view == todosync.todoView"
